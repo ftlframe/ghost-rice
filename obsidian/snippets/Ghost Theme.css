@@ -1,0 +1,105 @@
+/* Ghost palette — gray-purple with distinct accent hues
+   Matches ~/.config (sway, ghostty, nvim rose-pine overrides) */
+
+.theme-dark {
+  /* Core backgrounds */
+  --background-primary:         #0c0b10;
+  --background-primary-alt:     #100e15;
+  --background-secondary:       #17151e;
+  --background-secondary-alt:   #221f2b;
+  --background-modifier-border:         #2a2636;
+  --background-modifier-border-hover:   #3a3348;
+  --background-modifier-border-focus:   #a899cc;
+  --background-modifier-hover:          #221f2b;
+  --background-modifier-active-hover:   #2a2636;
+  --background-modifier-form-field:     #17151e;
+  --background-modifier-box-shadow:     rgba(0, 0, 0, 0.5);
+  --background-modifier-success:        #85b594;
+  --background-modifier-error:          #c46878;
+  --background-modifier-error-hover:    #d47888;
+
+  /* Text */
+  --text-normal:       #c4bdd4;
+  --text-muted:         #8a7fa0;
+  --text-faint:         #584f6a;
+  --text-on-accent:     #0c0b10;
+  --text-accent:        #a899cc;
+  --text-accent-hover:  #b8a9dc;
+  --text-selection:     #a899cc55;
+  --text-highlight-bg:  #c4a87a44;
+  --text-error:         #c46878;
+  --text-success:       #85b594;
+
+  /* Accents (Obsidian uses HSL for --interactive-accent) */
+  --interactive-accent:        #a899cc;
+  --interactive-accent-hover:  #b8a9dc;
+  --interactive-normal:        #221f2b;
+  --interactive-hover:         #2a2636;
+
+  /* Headings — cycle through Ghost hues */
+  --h1-color: #d4a8b8;  /* pink */
+  --h2-color: #a899cc;  /* lilac */
+  --h3-color: #7ea0b8;  /* steel */
+  --h4-color: #a8c4a0;  /* sage */
+  --h5-color: #c4a87a;  /* amber */
+  --h6-color: #7aab9a;  /* teal */
+
+  /* Code & syntax */
+  --code-normal:     #c4bdd4;
+  --code-background: #17151e;
+  --code-keyword:    #a899cc;
+  --code-function:   #d4a8b8;
+  --code-string:     #a8c4a0;
+  --code-comment:    #584f6a;
+  --code-property:   #7ea0b8;
+  --code-tag:        #c4a87a;
+  --code-value:      #7aab9a;
+  --code-operator:   #c4bdd4;
+  --code-punctuation:#8a7fa0;
+  --code-important:  #c46878;
+
+  /* Tags, links, quotes */
+  --tag-color:       #c4a87a;
+  --tag-background:  #221f2b;
+  --link-color:      #7aab9a;
+  --link-color-hover:#8abbaa;
+  --link-unresolved-color: #c46878;
+  --blockquote-border-color: #a899cc;
+
+  /* Graph view */
+  --graph-line:  #2a2636;
+  --graph-node:  #c4bdd4;
+  --graph-text:  #c4bdd4;
+  --graph-node-unresolved: #584f6a;
+  --graph-node-focused:    #d4a8b8;
+  --graph-node-tag:        #c4a87a;
+  --graph-node-attachment: #7ea0b8;
+
+  /* Checkboxes & callouts */
+  --checkbox-color:        #a899cc;
+  --checkbox-color-hover:  #b8a9dc;
+  --checklist-done-color:  #584f6a;
+
+  --callout-info:    126, 160, 184;  /* steel */
+  --callout-success: 168, 196, 160;  /* sage */
+  --callout-warning: 196, 168, 122;  /* amber */
+  --callout-error:   196, 104, 120;  /* red */
+  --callout-tip:     122, 171, 154;  /* teal */
+  --callout-quote:   168, 153, 204;  /* lilac */
+
+  /* Scrollbars, caret, selection */
+  --scrollbar-bg:           transparent;
+  --scrollbar-thumb-bg:     #2a2636;
+  --scrollbar-active-thumb-bg: #a899cc;
+  --caret-color:            #d4a8b8;
+  --selection-background:   #a899cc44;
+
+  /* Tab bar / title bar */
+  --titlebar-background:          #0c0b10;
+  --titlebar-background-focused:  #0c0b10;
+  --titlebar-text-color:          #c4bdd4;
+  --titlebar-text-color-focused:  #c4bdd4;
+  --tab-background-active:        #17151e;
+  --tab-text-color:               #8a7fa0;
+  --tab-text-color-focused-active:#c4bdd4;
+}

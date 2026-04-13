@@ -223,6 +223,84 @@ if command -v fish &>/dev/null; then
     fi
 fi
 
+# --- Claude Code config (CLAUDE.md, memory, skills) ---
+if [ -d "$SCRIPT_DIR/claude" ]; then
+    echo ""
+    echo "=== Installing Claude Code config ==="
+
+    CLAUDE_DIR="$HOME/.claude"
+    MEM_DIR="$CLAUDE_DIR/projects/-home-lambda--config/memory"
+    SKILLS_DIR="$CLAUDE_DIR/skills"
+    mkdir -p "$CLAUDE_DIR" "$MEM_DIR" "$SKILLS_DIR"
+
+    if [ -f "$SCRIPT_DIR/claude/CLAUDE.md" ]; then
+        if [ -f "$CLAUDE_DIR/CLAUDE.md" ] && ! cmp -s "$SCRIPT_DIR/claude/CLAUDE.md" "$CLAUDE_DIR/CLAUDE.md"; then
+            mkdir -p "$BACKUP_DIR/claude"
+            cp "$CLAUDE_DIR/CLAUDE.md" "$BACKUP_DIR/claude/CLAUDE.md"
+        fi
+        cp "$SCRIPT_DIR/claude/CLAUDE.md" "$CLAUDE_DIR/CLAUDE.md"
+        echo "  Installed ~/.claude/CLAUDE.md"
+    fi
+
+    if [ -d "$SCRIPT_DIR/claude/memory" ]; then
+        if [ -d "$MEM_DIR" ] && [ -n "$(ls -A "$MEM_DIR" 2>/dev/null)" ]; then
+            mkdir -p "$BACKUP_DIR/claude"
+            cp -r "$MEM_DIR" "$BACKUP_DIR/claude/memory"
+        fi
+        cp -r "$SCRIPT_DIR/claude/memory/." "$MEM_DIR/"
+        echo "  Installed memory → $MEM_DIR"
+    fi
+
+    if [ -d "$SCRIPT_DIR/claude/skills" ]; then
+        for skill in "$SCRIPT_DIR/claude/skills"/*/; do
+            [ -d "$skill" ] || continue
+            name="$(basename "$skill")"
+            if [ -d "$SKILLS_DIR/$name" ]; then
+                mkdir -p "$BACKUP_DIR/claude/skills"
+                cp -r "$SKILLS_DIR/$name" "$BACKUP_DIR/claude/skills/"
+                rm -rf "$SKILLS_DIR/$name"
+            fi
+            cp -r "$skill" "$SKILLS_DIR/"
+            echo "  Installed skill: $name"
+        done
+    fi
+fi
+
+# --- Obsidian snippets (Ghost theme for any vault under ~/Development/Notes or $OBSIDIAN_VAULT) ---
+if [ -d "$SCRIPT_DIR/obsidian/snippets" ]; then
+    # Candidate vault roots: explicit override, then common default
+    CANDIDATES=()
+    [ -n "${OBSIDIAN_VAULT:-}" ] && CANDIDATES+=("$OBSIDIAN_VAULT")
+    CANDIDATES+=("$HOME/Development/Notes")
+
+    INSTALLED_ANY=0
+    for vault in "${CANDIDATES[@]}"; do
+        [ -d "$vault/.obsidian" ] || continue
+        echo ""
+        echo "=== Installing Obsidian snippets → $vault ==="
+        mkdir -p "$vault/.obsidian/snippets"
+        for snip in "$SCRIPT_DIR/obsidian/snippets"/*.css; do
+            [ -f "$snip" ] || continue
+            name="$(basename "$snip")"
+            dest="$vault/.obsidian/snippets/$name"
+            if [ -f "$dest" ] && ! cmp -s "$snip" "$dest"; then
+                mkdir -p "$BACKUP_DIR/obsidian-snippets"
+                cp "$dest" "$BACKUP_DIR/obsidian-snippets/"
+            fi
+            cp "$snip" "$dest"
+            echo "  Installed snippet: $name"
+        done
+        echo "  NOTE: enable 'Ghost Theme' in Obsidian → Settings → Appearance → CSS snippets"
+        INSTALLED_ANY=1
+    done
+
+    if [ "$INSTALLED_ANY" -eq 0 ]; then
+        echo ""
+        echo "NOTE: No Obsidian vault found. Set \$OBSIDIAN_VAULT and re-run to install snippets,"
+        echo "      or copy ghost-rice/obsidian/snippets/*.css into <vault>/.obsidian/snippets/ manually."
+    fi
+fi
+
 echo ""
 echo "=== Done! ==="
 echo ""
