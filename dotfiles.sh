@@ -39,38 +39,46 @@ if [ "$PKG_MGR" = "apt" ]; then
         sway sway-notification-center swaylock swayidle
         waybar rofi wlogout fish tmux
         playerctl pavucontrol
-        grim slurp wl-clipboard swappy
+        grim slurp wl-clipboard
         eza jq ranger
         blueman network-manager-gnome
-        polkit-gnome-1 gnome-keyring
+        gnome-keyring
     )
-else
+
+    MISSING=()
+    for pkg in "${PKGS[@]}"; do
+        pkg_installed "$pkg" || MISSING+=("$pkg")
+    done
+
+    if [ ${#MISSING[@]} -gt 0 ]; then
+        echo "  Installing: ${MISSING[*]}"
+        sudo apt update
+        sudo apt install -y "${MISSING[@]}"
+    else
+        echo "  All packages already installed, skipping"
+    fi
+elif [ "$PKG_MGR" = "dnf" ]; then
     PKGS=(
         sway swaync swaylock swayidle
         waybar rofi wlogout fish tmux
         playerctl pavucontrol
-        grim slurp wl-clipboard swappy
+        grim slurp wl-clipboard
         eza jq ranger
         blueman NetworkManager-tui
         polkit-gnome gnome-keyring
     )
-fi
 
-MISSING=()
-for pkg in "${PKGS[@]}"; do
-    pkg_installed "$pkg" || MISSING+=("$pkg")
-done
+    MISSING=()
+    for pkg in "${PKGS[@]}"; do
+        pkg_installed "$pkg" || MISSING+=("$pkg")
+    done
 
-if [ ${#MISSING[@]} -gt 0 ]; then
-    echo "  Installing: ${MISSING[*]}"
-    if [ "$PKG_MGR" = "apt" ]; then
-        sudo apt update
-        sudo apt install -y "${MISSING[@]}"
-    else
+    if [ ${#MISSING[@]} -gt 0 ]; then
+        echo "  Installing: ${MISSING[*]}"
         sudo dnf install -y "${MISSING[@]}"
+    else
+        echo "  All packages already installed, skipping"
     fi
-else
-    echo "  All packages already installed, skipping"
 fi
 
 # autotiling — python package
