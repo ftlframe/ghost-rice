@@ -1,0 +1,33 @@
+daemonize
+ignore-empty-password
+show-failed-attempts
+color=080709
+
+# Ring
+indicator-radius=120
+indicator-thickness=8
+inside-color=08070900
+inside-clear-color=08070900
+inside-ver-color=08070900
+inside-wrong-color=08070900
+ring-color=2d2735
+ring-clear-color=9ccfd8
+ring-ver-color=a29dfa
+ring-wrong-color=fc4649
+line-color=00000000
+line-clear-color=00000000
+line-ver-color=00000000
+line-wrong-color=00000000
+separator-color=00000000
+
+# Key highlight
+key-hl-color=9ccfd8
+bs-hl-color=f5b0ef
+
+# Text
+text-color=e0ceed
+text-clear-color=9ccfd8
+text-ver-color=a29dfa
+text-wrong-color=fc4649
+font=Inter
+font-size=14

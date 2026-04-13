@@ -1,0 +1,42 @@
+# Shell
+command = fish
+
+# Font
+font-family = JetBrains Mono
+font-size = 11
+
+# Cursor
+cursor-style = bar
+cursor-color = #9a8eb5
+
+# Window
+gtk-titlebar = false
+window-padding-x = 7
+window-padding-y = 10
+background-opacity = 0.85
+
+# Behavior
+scrollback-limit = 3000
+
+# Colors (Ghost — gray-purple with distinct hues)
+background = #0c0b10
+foreground = #c4bdd4
+selection-background = #c4bdd4
+selection-foreground = #0c0b10
+
+palette = 0=#221f2b
+palette = 1=#c46878
+palette = 2=#85b594
+palette = 3=#c4a87a
+palette = 4=#7ea0b8
+palette = 5=#a899cc
+palette = 6=#7aab9a
+palette = 7=#c4bdd4
+palette = 8=#584f6a
+palette = 9=#c46878
+palette = 10=#a8c4a0
+palette = 11=#d4c4a0
+palette = 12=#7ea0b8
+palette = 13=#d4a8b8
+palette = 14=#7aab9a
+palette = 15=#c4bdd4

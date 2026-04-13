@@ -1,0 +1,111 @@
+/* --- swaync Lain Theme --- */
+
+@define-color background #000000;
+@define-color foreground #e0b2a5;
+@define-color accent #e76f8b;
+@define-color secondary #ff7a99;
+@define-color surface #282839;
+@define-color surface-alt #3a3a4d;
+@define-color muted #4d4d4d;
+@define-color red #ff5774;
+@define-color green #6ae98a;
+
+/* Global font override — !important to beat /etc/xdg/swaync/style.css */
+* {
+    font-family: "JetBrains Mono Nerd Font" !important;
+    font-size: 8pt !important;
+}
+
+/* Main Notification Center Window */
+.control-center {
+    background-color: alpha(@background, 0.92);
+    border: 2px solid @accent;
+    border-radius: 14px;
+}
+
+/* "No Notifications" Label */
+.widget-label {
+    color: @muted;
+    font-size: 13px;
+    font-weight: bold;
+    margin: 12px;
+}
+
+/* Individual Notification Pop-up */
+.notification {
+    background-color: alpha(@surface, 0.95);
+    border: 1px solid @surface-alt;
+    border-radius: 10px;
+    padding: 6px;
+    margin: 4px 6px;
+}
+
+.notification-content {
+    padding: 3px;
+}
+
+/* Notification Title */
+.title {
+    font-size: 12px;
+    font-weight: bold;
+    color: @accent;
+}
+
+/* Notification Body */
+.body {
+    font-size: 11px;
+    color: @foreground;
+}
+
+/* Close Button */
+.close-button {
+    background-color: transparent;
+    color: @muted;
+    border-radius: 8px;
+    padding: 2px;
+    margin: 5px;
+}
+.close-button:hover {
+    background-color: @surface-alt;
+    color: @red;
+}
+
+/* Buttons inside notifications */
+.notification-button {
+    background-color: @surface-alt;
+    color: @foreground;
+    border-radius: 8px;
+    padding: 4px 8px;
+    margin: 5px;
+    font-weight: bold;
+}
+.notification-button:hover {
+    background-color: @accent;
+    color: @background;
+}
+
+/* Summary text in control center */
+.summary {
+    color: @foreground;
+    font-weight: bold;
+}
+
+/* Time label */
+.time {
+    color: @muted;
+    font-size: 12px;
+}
+
+/* DND toggle */
+.widget-dnd {
+    margin: 10px;
+}
+
+.widget-dnd > switch {
+    background-color: @surface-alt;
+    border-radius: 8px;
+}
+
+.widget-dnd > switch:checked {
+    background-color: @accent;
+}

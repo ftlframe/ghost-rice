@@ -1,0 +1,319 @@
+# Default config for sway
+#
+# Copy this to ~/.config/sway/config and edit it to your liking.
+#
+# Read `man 5 sway` for a complete reference.
+exec export XDG_CURRENT_DESKTOP=sway
+exec export EDITOR=nvim
+exec export VISUAL=nvim
+exec export SUDO_EDITOR=nvim
+# Set the default font
+font pango:Inter 10
+
+
+
+# Start the auth agent, if you don't use this you can comment out this line.
+exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
+exec --no-startup-id sh -c ' eval $(gnome-keyring-daemon --login) eval $(gnome-keyring-daemon --start --components=secrets,ssh) export SSH_AUTH_SOCK'
+exec --no-startup-id eval $(gnome-keyring-daemon --start --components=secrets,pkcs11)
+exec --no-startup-id export SSH_AUTH_SOCK
+# Start the network manager applet, can comment out this line if you don't use network manager.
+exec nm-applet
+exec swaync
+exec_always autotiling
+exec_always ~/.cargo/bin/swayrd
+
+### Variables
+#
+# win key. Use Mod1 for Alt.
+set $mod Mod4
+# Home row direction keys
+set $left h
+set $down j
+set $up k
+set $right l
+# Terminal emulator
+set $term ghostty
+# app launcher
+set $menu rofi -show drun
+
+set $file_explorer ghostty -e ranger
+# Gaps between windows
+gaps inner 8px
+gaps outer 4px
+
+# Border width, I prefer THIN borders ^-^
+default_border pixel 2px
+default_floating_border pixel 2px
+
+bindsym $mod+p exec wlogout
+exec systemctl --user start xdg-desktop-portal-wlr
+
+# Import environment variables for D-Bus (for Flameshot)
+exec systemctl --user import-environment DISPLAY WAYLAND_DISPLAY SWAYSOCK
+exec hash dbus-update-activation-environment 2>/dev/null && \
+     dbus-update-activation-environment --systemd DISPLAY WAYLAND_DISPLAY SWAYSOCK
+
+# Flameshot window rule
+for_window [app_id="flameshot"] border pixel 0, floating enable, fullscreen disable, move absolute position 0 0
+
+# Clipse clipboard manager
+for_window [title="clipse"] floating enable, border pixel 2
+for_window [app_id="pavucontrol"] floating enable
+for_window [app_id="blueman-manager"] floating enable
+for_window [app_id="nm-connection-editor"] floating enable
+for_window [app_id="gnome-calculator"] floating enable
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="dialog"] floating enable
+for_window [window_type="dialog"] floating enable
+# start clipse listener on startup
+exec clipse -listen
+# open clipse with Super+C
+bindsym $mod+c exec pkill clipse || ghostty --title=clipse -e clipse
+
+
+# The border colors:
+
+#                        border    bg      text    ind     child border
+client.focused          #a899cc #0c0b10 #c4bdd4 #a899cc #a899cc
+client.focused_inactive #221f2b #0c0b10 #c4bdd4 #221f2b #221f2b
+client.unfocused        #221f2b #0c0b10 #584f6a #221f2b #221f2b
+client.urgent           #c46878 #0c0b10 #c4bdd4 #c46878 #c46878
+
+client.placeholder      #221f2b #0c0b10 #c4bdd4 #221f2b #221f2b
+
+### Output configuration
+#
+# Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
+output * bg "$HOME/Pictures/wallpapers/wallpaper_ghost.png" fill 
+# Display config — run setup-displays.sh on first setup
+include ~/.config/sway/displays.conf
+
+# Focus workspace 1 on startup
+exec swaymsg workspace 1
+
+### Idle configuration
+exec swayidle -w \
+    timeout 300 'swaylock -f' \
+    timeout 600 'swaymsg "output * power off"' \
+    resume 'swaymsg "output * power on"' \
+    before-sleep 'swaylock -f'
+
+### Input configuration
+input "type:pointer" {
+    accel_profile "flat"
+    pointer_accel 0.1
+}
+
+input type:keyboard {
+	xkb_layout "us,rs(latin)"
+	xkb_options "grp:alt_shift_toggle"
+}
+
+
+### Key bindings
+    bindsym $mod+Return exec $term
+    bindsym $mod+q kill
+    bindsym $mod+d exec $menu
+    bindsym $mod+n exec swaync-client -t
+    bindsym $mod+Shift+n exec swaync-client -C
+
+    # Screenshot
+    bindsym Print exec grim -g "$(slurp)" - | swappy -f -
+    # bindsym Print exec flameshot gui
+
+    # Screen recording (region select, 60fps) — press again to stop
+    bindsym $mod+Shift+r exec pkill wf-recorder || wf-recorder -g "$(slurp)" -r 60 -f ~/Videos/recording-$(date +%Y%m%d-%H%M%S).mp4
+
+    floating_modifier $mod normal
+    
+    bindsym $mod+e exec $file_explorer
+
+    # Keybind cheatsheet
+    bindsym $mod+slash exec ~/.config/sway/keybinds.sh
+
+    # Reload the configuration file
+    bindsym $mod+Shift+c reload
+
+    # Exit sway (logs you out of your Wayland session)
+    bindsym $mod+Shift+e exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+#
+# Moving around:
+#
+    # Move your focus around
+    bindsym $mod+$left focus left
+    bindsym $mod+$down focus down
+    bindsym $mod+$up focus up
+    bindsym $mod+$right focus right
+    # Or use $mod+[up|down|left|right]
+    bindsym $mod+Left focus left
+    bindsym $mod+Down focus down
+    bindsym $mod+Up focus up
+    bindsym $mod+Right focus right
+
+    bindsym $mod+Shift+$left move left
+    bindsym $mod+Shift+$down move down
+    bindsym $mod+Shift+$up move up
+    bindsym $mod+Shift+$right move right
+    # Ditto, with arrow keys
+    bindsym $mod+Shift+Left move left
+    bindsym $mod+Shift+Down move down
+    bindsym $mod+Shift+Up move up
+    bindsym $mod+Shift+Right move right
+#
+# Workspaces:
+#
+    # Switch to workspace
+    bindsym $mod+1 workspace number 1
+    bindsym $mod+2 workspace number 2
+    bindsym $mod+3 workspace number 3
+    bindsym $mod+4 workspace number 4
+    bindsym $mod+5 workspace number 5
+    bindsym $mod+6 workspace number 6
+    bindsym $mod+7 workspace number 7
+    bindsym $mod+8 workspace number 8
+    bindsym $mod+9 workspace number 9
+    bindsym $mod+0 workspace number 10
+    # Move focused container to workspace
+    bindsym $mod+Shift+1 move container to workspace number 1
+    bindsym $mod+Shift+2 move container to workspace number 2
+    bindsym $mod+Shift+3 move container to workspace number 3
+    bindsym $mod+Shift+4 move container to workspace number 4
+    bindsym $mod+Shift+5 move container to workspace number 5
+    bindsym $mod+Shift+6 move container to workspace number 6
+    bindsym $mod+Shift+7 move container to workspace number 7
+    bindsym $mod+Shift+8 move container to workspace number 8
+    bindsym $mod+Shift+9 move container to workspace number 9
+    bindsym $mod+Shift+0 move container to workspace number 10
+    # Note: workspaces can have any name you want, not just numbers.
+    # We just use 1-10 as the default.
+
+    bindsym $mod+bracketleft workspace prev_on_output
+    bindsym $mod+bracketright workspace next_on_output
+    bindsym $mod+Tab exec ~/.cargo/bin/swayr switch-window
+    bindsym $mod+Shift+Tab exec ~/.cargo/bin/swayr switch-workspace    
+
+
+    # Mouse side buttons (thumb) for workspace switching
+    bindsym --whole-window button8 workspace prev_on_output
+    bindsym --whole-window button9 workspace next_on_output
+
+    # Mod + scroll wheel for workspace switching
+    bindsym --whole-window $mod+button4 workspace prev_on_output
+    bindsym --whole-window $mod+button5 workspace next_on_output
+
+    # Quick toggle between last two workspaces
+    workspace_auto_back_and_forth yes
+    bindsym $mod+x workspace back_and_forth
+
+# App-to-workspace assignments
+assign [app_id="app.zen_browser.zen"] workspace 6
+assign [app_id="equibop"] workspace 8
+assign [app_id="io.github.kukuruzka165.materialgram"] workspace 9
+##
+# Layout stuff:
+#
+    # You can "split" the current object of your focus with
+    # $mod+b or $mod+v, for horizontal and vertical splits
+    # respectively.
+    bindsym $mod+b splith
+    bindsym $mod+v splitv
+
+    # Switch the current container between different layout styles
+    bindsym $mod+s layout stacking
+    bindsym $mod+w layout tabbed
+    bindsym $mod+t layout toggle split
+
+
+    # Make the current focus fullscreen
+    bindsym $mod+f fullscreen
+
+    # Toggle the current focus between tiling and floating mode
+    bindsym $mod+Shift+space floating toggle
+
+    # Swap focus between the tiling area and the floating area
+    bindsym $mod+space focus mode_toggle
+
+    # Move focus to the parent container
+    bindsym $mod+a focus parent
+#
+# Scratchpad:
+#
+    # Sway has a "scratchpad", which is a bag of holding for windows.
+    # You can send windows there and get them back later.
+
+    # Move the currently focused window to the scratchpad
+    bindsym $mod+Shift+minus move scratchpad
+
+    # Show the next scratchpad window or hide the focused scratchpad window.
+    # If there are multiple scratchpad windows, this command cycles through them.
+    bindsym $mod+minus scratchpad show
+#
+# Resizing containers:
+#
+mode "resize" {
+    # left will shrink the containers width
+    # right will grow the containers width
+    # up will shrink the containers height
+    # down will grow the containers height
+    bindsym $left resize shrink width 10px
+    bindsym $down resize grow height 10px
+    bindsym $up resize shrink height 10px
+    bindsym $right resize grow width 10px
+
+    # Ditto, with arrow keys
+    bindsym Left resize shrink width 10px
+    bindsym Down resize grow height 10px
+    bindsym Up resize shrink height 10px
+    bindsym Right resize grow width 10px
+
+    # Return to default mode
+    bindsym Return mode "default"
+    bindsym Escape mode "default"
+}
+bindsym $mod+r mode "resize"
+
+# Vim-style resize (no mode needed)
+bindsym $mod+Ctrl+h resize shrink width 30px
+bindsym $mod+Ctrl+j resize shrink height 30px
+bindsym $mod+Ctrl+k resize grow height 30px
+bindsym $mod+Ctrl+l resize grow width 30px
+
+# Fast resize
+bindsym $mod+Ctrl+Shift+h resize shrink width 100px
+bindsym $mod+Ctrl+Shift+j resize shrink height 100px
+bindsym $mod+Ctrl+Shift+k resize grow height 100px
+bindsym $mod+Ctrl+Shift+l resize grow width 100px
+#
+# Utilities:
+#
+    # Special keys to adjust volume via PulseAudio
+    bindsym --locked XF86AudioMute exec pactl set-sink-mute \@DEFAULT_SINK@ toggle
+    bindsym --locked XF86AudioLowerVolume exec pactl set-sink-volume \@DEFAULT_SINK@ -5%
+    bindsym --locked XF86AudioRaiseVolume exec ~/.config/sway/volume-up.sh
+    bindsym --locked XF86AudioMicMute exec pactl set-source-mute \@DEFAULT_SOURCE@ toggle
+    bindsym --locked XF86AudioPlay exec playerctl play-pause
+    bindsym --locked XF86AudioNext exec playerctl next
+    bindsym --locked XF86AudioPrev exec playerctl previous
+
+# Status bars (dual waybar — top + bottom)
+exec_always bash -c 'killall waybar 2>/dev/null; sleep 0.3; waybar &'
+
+# --- SwayFX Effects ---
+blur enable
+blur_passes 2
+blur_radius 5
+corner_radius 10
+shadows enable
+shadow_blur_radius 10
+shadow_color #0c0b10cc
+default_dim_inactive 0.05
+
+# Layer effects (blur behind waybar, wofi, notifications)
+# layer_effects "waybar" blur enable; shadows enable; corner_radius 14
+layer_effects "rofi" blur enable; shadows enable; corner_radius 20
+layer_effects "swaync-control-center" blur enable; shadows enable
+layer_effects "swaync-notification-window" blur enable; shadows enable; corner_radius 12
+
+include /etc/sway/config.d/*
+

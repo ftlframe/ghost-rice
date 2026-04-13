@@ -1,0 +1,36 @@
+{
+    "label" : "lock",
+    "action" : "if pgrep -x Hyprland >/dev/null; then loginctl lock-session; else swaylock -f -c 080709; fi",
+    "text" : "lock",
+    "keybind" : "l"
+}
+{
+    "label" : "logout",
+    "action" : "if pgrep -x Hyprland >/dev/null; then hyprctl clients -j | jq -r '.[].pid' | xargs kill; pkill Hyprland; else swaymsg exit; fi",
+    "text" : "logout",
+    "keybind" : "e"
+}
+{
+    "label" : "suspend",
+    "action" : "loginctl lock-session && systemctl suspend",
+    "text" : "bedtime",
+    "keybind" : "u"
+}
+{
+    "label" : "hibernate",
+    "action" : "systemctl hibernate",
+    "text" : "downloading",
+    "keybind" : "h"
+}
+{
+    "label" : "reboot",
+    "action" : "if pgrep -x Hyprland >/dev/null; then hyprctl clients -j | jq -r '.[].pid' | xargs kill; fi; systemctl reboot",
+    "text" : "restart_alt",
+    "keybind" : "r"
+}
+{
+    "label" : "shutdown",
+    "action" : "if pgrep -x Hyprland >/dev/null; then hyprctl clients -j | jq -r '.[].pid' | xargs kill; fi; systemctl poweroff",
+    "text" : "power_settings_new",
+    "keybind" : "s"
+}

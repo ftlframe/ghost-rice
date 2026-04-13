@@ -1,0 +1,12 @@
+/**
+ * Colors — Ghost (gray-purple with distinct hues)
+ **/
+
+* {
+    background:     #0c0b10FF;
+    background-alt: #17151eFF;
+    border:         #a899cc;
+    selected:       #c4bdd4;
+    active:         #d4a8b8;
+    urgent:         #c46878;
+}

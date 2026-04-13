@@ -1,0 +1,7 @@
+config/sway/displays.conf
+config/sway/config.bak*
+config/sway/config.pre-*
+config/fish/fish_variables
+config/fish/conf.d/!(*.fish)
+*.swp
+.DS_Store
