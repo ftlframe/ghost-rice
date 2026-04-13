@@ -6,7 +6,7 @@ A gray-purple Sway rice with distinct accent hues. Portable dotfiles bundle for 
 
 | Component | Path | Description |
 |-----------|------|-------------|
-| Sway (SwayFX) | `config/sway/` | Tiling WM — blur, rounded corners, shadows, autotiling, swayr |
+| Sway | `config/sway/` | Tiling WM — autotiling, swayr |
 | Waybar | `config/waybar/` | Dual bar — top + bottom |
 | Rofi | `config/rofi/` | App launcher (3-column grid) |
 | swaync | `config/swaync/` | Notification center |
@@ -65,8 +65,7 @@ The installer will:
    ```
 2. **Ghostty & clipse** — install manually; neither is in apt/dnf repos.
 3. **Neovim** — requires LazyVim already set up. The installer only drops theme files.
-4. **SwayFX** — the sway config uses SwayFX-only features (blur, rounded corners, shadows). On stock sway those lines will be ignored/errored. Comment them out or build SwayFX from source.
-5. Log out and select **Sway** from your display manager.
+4. Log out and select **Sway** from your display manager.
 
 ## Manual installs (not in repos)
 
